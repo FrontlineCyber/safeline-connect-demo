@@ -4,30 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SafeLine Connect</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>SafeLine Connect</h1>
-    <button id="exit-button">Exit Site</button>
-  </header>
-  <main>
-    <section class="quote-box">
-      <blockquote id="quote"></blockquote>
-    </section>
-    <button id="chat-toggle">💬 Chat with SafeLine</button>
-    <div id="chatbox">
-      <div class="chat-header">
-        <h2>SafeLine Chat</h2>
-        <button id="exit-button-chat">Exit Site</button>
-      </div>
-      <ul id="chat-messages">
-        <li class="bot">Hi there! I'm SafeLine—I'm here to help however I can 💬</li>
-      </ul>
-      <textarea id="chat-input" placeholder="Type your message..."></textarea>
-      <button id="send-btn">Send</button>
-    </div>
-  </main>
-  <script src="script.js"></script>
+  <h1>Welcome to SafeLine Connect</h1>
+  <textarea id="userInput" placeholder="Type your message..."></textarea>
+  <button onclick="sendMessage()">Send</button>
+  <pre id="response"></pre>
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput').value;
+      const res = await fetch('/.netlify/functions/chatbot', {
+        method: 'POST',
+        body: JSON.stringify({ message: input }),
+      });
+      const data = await res.json();
+      document.getElementById('response').textContent = data.reply || 'No response';
+    }
+  </script>
 </body>
 </html>
